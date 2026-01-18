@@ -1,15 +1,20 @@
 spring:
   datasource:
-    url: jdbc:mysql://db:3306/datarize
+    url: jdbc:mysql://localhost:3306/datarize
     username: datarize
     password: datarize
     driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:init.sql
 
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true

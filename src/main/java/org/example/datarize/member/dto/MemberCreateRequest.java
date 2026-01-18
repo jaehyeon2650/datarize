@@ -3,6 +3,8 @@ package org.example.datarize.member.dto;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import org.example.datarize.common.error.BusinessException;
+import org.example.datarize.common.error.ErrorCode;
 
 public record MemberCreateRequest(
         String name,
@@ -12,13 +14,13 @@ public record MemberCreateRequest(
 
     public MemberCreateRequest {
         if (birth == null || birth.isBlank()) {
-            throw new IllegalArgumentException("birth는 필수입니다.");
+            throw new BusinessException(ErrorCode.REQUIRED_BIRTH);
         }
 
         try {
             LocalDate.parse(birth, BIRTH_FORMAT);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("birth 형식이 올바르지 않습니다. (yyyy-MM-dd)");
+            throw new BusinessException(ErrorCode.INVALID_BIRTH);
         }
     }
 
