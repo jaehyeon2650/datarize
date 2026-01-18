@@ -3,6 +3,7 @@ package org.example.datarize.member.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
+import org.example.datarize.common.error.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,7 +16,7 @@ class MemberTest {
     @DisplayName("이름이 1글자 이하인 경우 예외가 발생한다.")
     void validateName(final String name) {
         assertThatThrownBy(() -> Member.of(name, LocalDate.now()))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessException.class)
                 .hasMessage("이름은 1글자 이상이여야합니다.");
     }
 
@@ -26,7 +27,7 @@ class MemberTest {
         final LocalDate future = LocalDate.now().plusDays(1);
         // when & then
         assertThatThrownBy(() -> Member.of("이름", future))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessException.class)
                 .hasMessage("생일은 미래일 수 없습니다.");
     }
 }

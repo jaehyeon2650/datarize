@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import org.example.datarize.common.error.BusinessException;
 import org.example.datarize.performance.domain.Concert;
 import org.example.datarize.performance.domain.ConcertInfo;
 import org.example.datarize.performance.domain.ConcertTime;
@@ -22,7 +23,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({ConcertService.class, PriceCalculator.class})
+@Import({ConcertService.class, PriceCalculator.class, ReservationCleanUpService.class})
 class ConcertServiceTest {
 
     @Autowired
@@ -35,8 +36,8 @@ class ConcertServiceTest {
     @DisplayName("존재하지 않은 시간에 대해 예외가 발생한다.")
     void invalidTime() {
         assertThatThrownBy(() -> concertService.readAllSeats(1L))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않은 시간입니다.");
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("존재하지 않은 회차입니다.");
     }
 
     @Test
