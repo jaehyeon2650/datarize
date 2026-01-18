@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class ConcertController {
+public class ConcertController implements ConcertApiDocs {
 
     private final ConcertService concertService;
     private final ReservationService reservationService;
