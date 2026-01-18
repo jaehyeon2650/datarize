@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.datarize.common.error.BusinessException;
+import org.example.datarize.common.error.ErrorCode;
 
 @Entity
 @Getter
@@ -35,13 +37,13 @@ public class Member {
 
     private static void validateName(final String name) {
         if (name == null || name.isEmpty() || name.isBlank()) {
-            throw new IllegalArgumentException("이름은 1글자 이상이여야합니다.");
+            throw new BusinessException(ErrorCode.INVALID_NAME_LENGTH);
         }
     }
 
     private static void validateBirth(final LocalDate birth) {
         if (birth.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("생일은 미래일 수 없습니다.");
+            throw new BusinessException(ErrorCode.INVALID_BIRTH_NOT_FUTURE);
         }
     }
 }

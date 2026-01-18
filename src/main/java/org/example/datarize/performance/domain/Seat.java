@@ -56,4 +56,19 @@ public class Seat {
         this.status = status;
         this.isCoupleSeat = isCoupleSeat;
     }
+
+    public boolean isCoupleWith(final Seat other) {
+        return this.isCoupleSeat
+                && other.isCoupleSeat
+                && this.row == other.row
+                && Math.abs(this.col - other.col) == 1;
+    }
+
+    public void changeSeatStatus(final SeatStatus seatStatus) {
+        this.status = seatStatus;
+    }
+
+    public boolean isNotAvailable() {
+        return ! (status == SeatStatus.AVAILABLE);
+    }
 }

@@ -37,4 +37,16 @@ public class Reservation {
     private ReservationStatus status;
 
     private LocalDateTime updatedAt;
+
+    public Reservation(
+            final Member member,
+            final Seat seat,
+            final ReservationStatus status,
+            final LocalDateTime updatedAt
+    ) {
+        this.member = member;
+        this.seat = seat;
+        this.status = status;
+        this.updatedAt = updatedAt;
+    }
 }

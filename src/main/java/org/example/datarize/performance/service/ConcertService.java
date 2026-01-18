@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.example.datarize.common.error.BusinessException;
+import org.example.datarize.common.error.ErrorCode;
 import org.example.datarize.performance.domain.Concert;
 import org.example.datarize.performance.domain.ConcertInfo;
 import org.example.datarize.performance.domain.ConcertTime;
@@ -23,15 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ConcertService {
 
+    private final ReservationCleanUpService reservationCleanUpService;
     private final SeatRepository seatRepository;
     private final ConcertTimeRepository concertTimeRepository;
     private final ConcertInfoRepository concertInfoRepository;
     private final PriceCalculator priceCalculator;
 
     public List<SeatInfoResponse> readAllSeats(final Long concertTimeId) {
-        // TODO : 좌석 상태 업데이트
+        reservationCleanUpService.clearExpiredReservations();
         final ConcertTime concertTime = concertTimeRepository.findById(concertTimeId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 시간입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_CONCERT_TIME));
         final Map<Grade, ConcertInfo> showInfos = findShowInfos(concertTime.getConcert());
         final List<Seat> seats = seatRepository.findSeatsByConcertTimeId(concertTimeId);
         final boolean isFirstShowTime = concertTimeRepository.isFirstShowTimeOfDate(
@@ -44,7 +47,7 @@ public class ConcertService {
                 .map(seat -> {
                     final ConcertInfo concertInfo = showInfos.get(seat.getGrade());
                     if (concertInfo == null) {
-                        throw new IllegalArgumentException("가격 정보가 존재하지 않습니다.");
+                        throw new BusinessException(ErrorCode.INVALID_CONCERT_INFO);
                     }
 
                     return SeatInfoResponse.of(
