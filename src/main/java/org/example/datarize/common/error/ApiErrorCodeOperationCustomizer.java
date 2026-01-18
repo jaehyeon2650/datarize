@@ -25,7 +25,7 @@ public class ApiErrorCodeOperationCustomizer implements OperationCustomizer {
     ) {
         final ApiErrorCodes apiErrorCodes = handlerMethod.getMethodAnnotation(ApiErrorCodes.class);
 
-        if(apiErrorCodes == null){
+        if (apiErrorCodes == null) {
             return operation;
         }
         final Map<Integer, List<ErrorCode>> groupErrorCodes = groupErrorCodesByHttpStatus(apiErrorCodes);
@@ -33,14 +33,16 @@ public class ApiErrorCodeOperationCustomizer implements OperationCustomizer {
             final int status = entry.getKey();
             final String descriptions = entry.getValue()
                     .stream()
-                    .map(error -> "- " + error.name()+ ": " + error.getMessage())
+                    .map(error -> "- " + error.name() + ": " + error.getMessage())
                     .collect(Collectors.joining("\n"));
             final ApiResponse apiResponse = new ApiResponse()
                     .description(descriptions)
-                    .content(new Content().addMediaType("application/json",
-                                                        new MediaType().schema(
-                            new Schema<>().$ref("#/components/schemas/ErrorResponse")
-                    )));
+                    .content(new Content().addMediaType(
+                            "application/json",
+                            new MediaType().schema(
+                                    new Schema<>().$ref("#/components/schemas/ErrorResponse")
+                            )
+                    ));
             operation.getResponses().addApiResponse(
                     String.valueOf(status),
                     apiResponse

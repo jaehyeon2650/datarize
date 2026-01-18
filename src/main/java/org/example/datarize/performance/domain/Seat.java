@@ -69,6 +69,6 @@ public class Seat {
     }
 
     public boolean isNotAvailable() {
-        return ! (status == SeatStatus.AVAILABLE);
+        return !(status == SeatStatus.AVAILABLE);
     }
 }

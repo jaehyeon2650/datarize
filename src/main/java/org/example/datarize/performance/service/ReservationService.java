@@ -39,12 +39,12 @@ public class ReservationService {
     ) {
         reservationCleanUpService.clearExpiredReservations();
         final Member member = memberRepository.findById(request.memberId())
-                .orElseThrow(()-> new BusinessException(ErrorCode.INVALID_MEMBER));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_MEMBER));
         final ConcertTime concertTime = concertTimeRepository.findById(concertTimeId)
-                .orElseThrow(()-> new BusinessException(ErrorCode.INVALID_CONCERT_TIME));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_CONCERT_TIME));
         final List<Long> seatIds = request.seatIds();
         final List<Seat> seats = seatRepository.findAllByIdIn(seatIds);
-        clearHoldReservationByMember(concertTime,member);
+        clearHoldReservationByMember(concertTime, member);
         validateSeat(seats);
         final LocalDateTime updateTime = LocalDateTime.now();
         final List<Reservation> newReservations = seats.stream()
@@ -89,9 +89,9 @@ public class ReservationService {
         }
     }
 
-    private void validateSeatStatus(final List<Seat> seats){
+    private void validateSeatStatus(final List<Seat> seats) {
         for (final Seat seat : seats) {
-            if(seat.isNotAvailable()) {
+            if (seat.isNotAvailable()) {
                 throw new BusinessException(ErrorCode.CANNOT_RESERVATION);
             }
         }

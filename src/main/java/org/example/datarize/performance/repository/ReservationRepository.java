@@ -20,15 +20,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     );
 
     @Query("""
-        SELECT r
-        FROM Reservation r
-        JOIN FETCH r.seat s
-        JOIN r.member m
-        JOIN s.concertTime ct
-        WHERE ct = :concertTime
-            AND m = :member
-            AND r.status = :status
-    """
+                SELECT r
+                FROM Reservation r
+                JOIN FETCH r.seat s
+                JOIN r.member m
+                JOIN s.concertTime ct
+                WHERE ct = :concertTime
+                    AND m = :member
+                    AND r.status = :status
+            """
     )
     List<Reservation> findAllByConcertTimeAndStatusAndMember(
             final ReservationStatus status,

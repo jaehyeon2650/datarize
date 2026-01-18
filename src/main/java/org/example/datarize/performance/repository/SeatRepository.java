@@ -21,10 +21,10 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     );
 
     @Query("""
-        UPDATE Seat s
-        SET s.status = :status
-        WHERE s.id in :seatIds
-    """
+                UPDATE Seat s
+                SET s.status = :status
+                WHERE s.id in :seatIds
+            """
     )
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     void updateSeatsStatus(

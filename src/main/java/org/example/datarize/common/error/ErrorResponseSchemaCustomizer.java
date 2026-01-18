@@ -13,8 +13,8 @@ public class ErrorResponseSchemaCustomizer implements OpenApiCustomizer {
     public void customise(final OpenAPI openApi) {
         ModelConverters.getInstance()
                 .read(ErrorResponse.class)
-                .forEach((name, schema)->{
-                    openApi.getComponents().addSchemas(name,schema);
+                .forEach((name, schema) -> {
+                    openApi.getComponents().addSchemas(name, schema);
                 });
     }
 }

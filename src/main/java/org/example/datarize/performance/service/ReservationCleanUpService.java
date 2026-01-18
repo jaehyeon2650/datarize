@@ -3,8 +3,6 @@ package org.example.datarize.performance.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.datarize.member.domain.Member;
-import org.example.datarize.performance.domain.ConcertTime;
 import org.example.datarize.performance.domain.Reservation;
 import org.example.datarize.performance.domain.ReservationStatus;
 import org.example.datarize.performance.domain.Seat;
